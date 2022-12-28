@@ -1,21 +1,34 @@
-set number
-set mouse=a
-syntax enable
-set showcmd
-set encoding=utf-8
-set showmatch
-set relativenumber
-set sw=2
+:set number
+:set relativenumber
+:set autoindent
+:set tabstop=4
+:set shiftwidth=4
+:set smarttab
+:set softtabstop=4
+:set mouse=a
+:set sw=2
+:set ruler
 
 call plug#begin('~/.vim/plugged')
 
-" TEMA GRUVBOX
-Plug 'sainnhe/gruvbox-material'
-
+Plug 'http://github.com/tpope/vim-surround' " Surrounding ysw)
+Plug 'scrooloose/nerdtree' " NerdTree
+Plug 'https://github.com/tpope/vim-commentary' " For Commenting gcc & gc
+Plug 'https://github.com/vim-airline/vim-airline' " Status bar
+Plug 'https://github.com/lifepillar/pgsql.vim' " PSQL Pluging needs :SQLSetType pgsql.vim
+Plug 'https://github.com/ap/vim-css-color' " CSS Color Preview
+Plug 'https://github.com/rafi/awesome-vim-colorschemes' " Retro Scheme
+Plug 'https://github.com/neoclide/coc.nvim'  " Auto Completion
+Plug 'https://github.com/ryanoasis/vim-devicons' " Developer Icons
+Plug 'https://github.com/tc50cal/vim-terminal' " Vim Terminal
+Plug 'https://github.com/preservim/tagbar' " Tagbar for code navigation
+Plug 'https://github.com/terryma/vim-multiple-cursors' " CTRL + N for multiple cursors
+Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+Plug 'mattn/emmet-vim'
+Plug 'Yggdroot/indentLine'
 " LSP
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
-Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 
 " plugins para javascript
 Plug 'pangloss/vim-javascript'
@@ -25,29 +38,49 @@ Plug 'maxmellon/vim-jsx-pretty'
 Plug 'SirVer/ultisnips'
 Plug 'mlaursen/vim-react-snippets'
 
-" EMMET
-Plug 'mattn/emmet-vim'
-
-" comentarios
-Plug 'tpope/vim-commentary'
-
-Plug 'Yggdroot/indentLine'
-
-Plug 'vim-airline/vim-airline'
-
-Plug 'scrooloose/nerdtree'
-
-Plug 'ryanoasis/vim-devicons'
+set encoding=UTF-8
 
 call plug#end()
 
+nnoremap <C-f> :NERDTreeFocus<CR>
+nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-l> :call CocActionAsync('jumpDefinition')<CR>
 
-" GRUVBOX configuracion
-set background=dark
-let g:gruvbox_material_background='medium'
-colorscheme gruvbox-material
+nmap <F8> :TagbarToggle<CR>
 
-" LSP configuracion
+:set completeopt-=preview " For No Previews
+
+:colorscheme jellybeans
+
+let g:NERDTreeDirArrowExpandable="+"
+let g:NERDTreeDirArrowCollapsible="~"
+
+" --- Just Some Notes ---
+" :PlugClean :PlugInstall :UpdateRemotePlugins
+"
+" :CocInstall coc-python
+" :CocInstall coc-clangd
+" :CocInstall coc-snippets
+" :CocCommand snippets.edit... FOR EACH FILE TYPE
+
+" air-line
+let g:airline_powerline_fonts = 1
+
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+
+" airline symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''
+
+inoremap <expr> <Tab> pumvisible() ? coc#_select_confirm() : "<Tab>"
 
 lua << EOF
 require'lspconfig'.tsserver.setup{on_attach=require'completion'.on_attach}
@@ -75,19 +108,9 @@ nnoremap <C-D> :Prettier<CR>
 nnoremap <space>/ :Commentary<CR>
 vnoremap <space>/ :Commentary<CR>
 
-" configuracion de airline
 let g:airline#extensions#tabline#enabled = 1
-
-" NERDTREE Configuracion
-let NERDTreeQuitOnOpen=1
 nnoremap <silent> <F2> :NERDTreeFind<CR>
 nnoremap <silent> <F3> :NERDTreeToggle<CR>
-
-
-
-
-
-
 
 
 "_________________________________________________________________________________
